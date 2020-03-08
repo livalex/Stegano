@@ -1,0 +1,393 @@
+bruteforce_singlebyte_xor:
+    push ebp
+    mov ebp, esp
+    
+    xor ebx, ebx
+    xor edx, edx
+    xor ecx, ecx
+    mov ecx, -1
+    mov ebx, -1
+    mov edx, -1
+    
+    sub esp, 16
+    push ebx ; nr de linii
+    push edx ; nr de coloane
+    push ecx ; nr de la 0 la 255
+    mov ebx, -50
+    push ebx ; inceputul liniei
+    xor ebx, ebx
+    
+change_number:
+    inc dword[ebp - 12] ; nr de la 0 la 255
+    mov dword[ebp - 4], -1 ; linii
+    mov dword[ebp - 8], -1 ; coloane
+    xor ebx, ebx
+    mov ebx, [ebp + 8] ; pointer catre matrice
+    
+first_loop:
+    inc dword[ebp - 4] ; maresti linii
+    mov dword[ebx - 8], -1
+
+second_loop:
+    inc dword[ebp - 8] ; maresti coloane
+    
+    mov edx, dword[ebp - 4]
+    imul edx, 50
+    mov [ebp - 16], edx ; pointer catre inceput de linie
+   
+start_comparing:
+    cmp ebx, 'r'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 'e'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 'v'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 'i'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 'e'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 'n'
+    jne wrong_char
+    inc dword[ebp - 8] ; maresti coloane
+    add ebx, 4
+    cmp ebx, 't'
+    jne wrong_char
+    
+    mov ebx, [ebp + 8]
+    add ebx, [ebp - 16]
+    
+display:
+    PRINT_CHAR ebx
+    add ebx, 4
+    cmp ebx, 0
+    je ending
+    
+    jmp display
+    
+    
+wrong_char:
+    mov ecx, dword[img_width]
+    dec ecx
+    cmp ecx, dword[ebp - 8]
+    je next_line
+    
+    inc dword[ebp - 8] ; maresti coloane 
+    add ebx, 4
+    jmp start_comparing
+    
+next_line:
+    xor ecx, ecx
+    mov ecx, dword[ebp - 4]
+    je change_number
+    
+    jmp first_loop
+
+ending:
+    NEWLINE
+    mov edx, dword[ebp - 12]
+    PRINT_DEC 4, edx
+    NEWLINE
+    mov edx, dword[ebp - 4]
+
+    leave
+    ret
+
+
+    mov eax, dword[ebp - 4]
+    PRINT_DEC 4, eax
+    NEWLINE
+    mov eax, dword[ebp - 8]
+    PRINT_DEC 4, eax
+    NEWLINE    
+    mov eax, dword[ebp - 12]
+    PRINT_DEC 4, eax
+    NEWLINE    
+    mov eax, dword[ebp - 16]
+    PRINT_DEC 4, eax
+    NEWLINE
+
+bruteforce_singlebyte_xor:
+    push ebp
+    mov ebp, esp
+    
+    xor eax, eax
+    xor ebx, ebx
+    xor edx, edx
+    xor ecx, ecx
+    mov ecx, -1
+    mov ebx, -1
+    mov edx, -1
+    
+    sub esp, 16
+    mov dword[ebp - 4], ebx ; linii
+    mov dword[ebp - 8], edx ; coloane
+    mov dword[ebp - 12], ecx ; cheie
+    mov ebx, -50
+    mov dword[ebp - 16], ebx ; inceput de linie
+    xor ebx, ebx
+    
+change_number:
+    inc dword[ebp - 12] ; nr de la 0 la 255
+    mov dword[ebp - 4], -1 ; linii
+    mov dword[ebp - 8], -1 ; coloane
+    mov ebx, [ebp + 8] ; pointer catre matrice
+    ; pana aici e bine
+    ; e ok la parcurgere
+    ; e ok checkpointul
+first_loop:
+    inc dword[ebp - 4]
+    mov eax, [img_height]
+    cmp dword[ebp - 4], eax
+    je change_number
+    mov dword[ebp - 8], -1   
+    
+second_loop:     
+    inc dword[ebp - 8]
+    mov eax, [img_width]
+    cmp dword[ebp - 8], eax
+    je first_loop
+    
+    mov edx, dword[ebp - 4]
+    imul edx, 50
+    mov [ebp - 16], edx ; checkpoint la inceput de linie
+    jmp start_comparing
+
+vector_iteration:
+    add ebx, 4
+    inc dword[ebp - 8]
+    mov eax, [img_width]
+    cmp dword[ebp - 8], eax
+    je first_loop
+
+start_comparing:
+    cmp ebx, 'r'
+    jne vector_iteration
+    cmp ebx, 'e'
+    jne vector_iteration
+    cmp ebx, 'v'
+    jne vector_iteration
+    cmp ebx, 'i'
+    jne vector_iteration
+    cmp ebx, 'e'
+    jne vector_iteration
+    cmp ebx, 'n'
+    jne vector_iteration
+    cmp ebx, 't'
+    jne vector_iteration
+    
+    mov ebx, [ebp + 8]
+    add ebx, [ebp - 16]
+    
+display:
+    PRINT_CHAR ebx
+    add ebx, 4
+    cmp ebx, 0
+    je ending
+    
+    jmp display
+    
+    
+ending:
+    ;mov eax, dword[ebp - 4] 
+    ;PRINT_DEC 4, eax
+    ;mov eax, dword[ebp - 8]
+    ;PRINT_DEC 4, eax
+    ;NEWLINE
+    ;PRINT_DEC 4, edx
+    NEWLINE
+    mov eax, dword[ebp - 12]
+    PRINT_DEC 4, eax
+    NEWLINE
+    mov eax, dword[ebp - 4]
+    
+    leave
+    ret
+
+
+UPDATE!!
+
+bruteforce_singlebyte_xor:
+    ;push ebp
+    ;mov ebp, esp
+    ;mov ebx, [ebp + 8]
+        
+    ;xor ecx, ecx
+    
+;ending:
+    ;mov eax, [ebx + 4 * ecx]
+    ;PRINT_DEC 4, eax
+    ;inc ecx
+    ;cmp ecx, 2500
+    ;jne ending
+    ;leave
+    ;ret
+    
+    push ebp
+    mov ebp, esp
+    
+    xor eax, eax
+    xor ebx, ebx
+    xor edx, edx
+    xor ecx, ecx
+    mov ecx, -1
+    mov ebx, -1
+    mov edx, -1
+    
+    sub esp, 16
+    mov dword[ebp - 4], ebx ; linii
+    mov dword[ebp - 8], edx ; coloane
+    mov dword[ebp - 12], ecx ; cheie
+    mov ebx, -50
+    mov dword[ebp - 16], ebx ; inceput de linie
+    xor ebx, ebx
+    
+change_number:
+    inc dword[ebp - 12] ; nr de la 0 la 255
+    mov dword[ebp - 4], -1 ; linii
+    mov dword[ebp - 8], -1 ; coloane
+    mov ebx, [ebp + 8] ; pointer catre matrice
+    ; pana aici e bine
+    ; e ok la parcurgere
+    ; e ok checkpointul
+first_loop:
+    inc dword[ebp - 4]
+    mov eax, [img_height]
+    ;
+    ;mov edx, dword[ebp - 4]
+    ;PRINT_DEC 4, edx
+   ; NEWLINE
+    cmp dword[ebp - 4], eax
+    je change_number
+    mov dword[ebp - 8], -1
+    ;PRINT_STRING string1
+    ;NEWLINE   
+    
+second_loop:     
+    inc dword[ebp - 8]
+    mov eax, [img_width]
+    cmp dword[ebp - 8], eax
+    je first_loop
+    
+    mov edx, dword[ebp - 4]
+    imul edx, 50
+    mov [ebp - 16], edx ; checkpoint la inceput de linie
+    jmp start_comparing
+    
+vector_iteration:
+    pop ebx
+    add ebx, 4
+    inc dword[ebp - 8]
+    mov eax, [img_width]
+    ;mov edx, dword[ebp - 8]
+    ;PRINT_DEC 4, edx
+    ;NEWLINE
+    cmp dword[ebp - 8], eax
+    je first_loop
+
+start_comparing:
+    ;PRINT_STRING string2
+    ;NEWLINE
+    push ebx
+    mov ebx, [ebx]
+    ;PRINT_DEC 4, ebx
+    ;NEWLINE
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'r'
+    ;PRINT_DEC 4,string2
+    ;NEWLINE
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'e'
+    ;PRINT_STRING string2
+    ;NEWLINE
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'v'
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'i'
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'e'
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 'n'
+    jne vector_iteration
+    pop ebx
+    add ebx, 4
+    push ebx
+    mov ebx, [ebx]
+    xor ebx, dword[ebp - 12]
+    cmp ebx, 't'
+    jne vector_iteration
+    pop ebx
+    ;PRINT_STRING string2
+    ;NEWLINE nu ajunge aici
+    
+    mov ebx, [ebp + 8]
+    add ebx, [ebp - 16]
+    
+display:
+    mov eax, [ebx]
+    PRINT_DEC 4, eax
+    NEWLINE
+    xor eax, dword[ebp - 12]
+    cmp eax, 0
+    je ending
+    
+    PRINT_CHAR eax
+    add ebx, 4
+    jmp display
+    ;PRINT_CHAR ebx
+    ;add ebx, 4
+    ;cmp ebx, 0
+    ;je ending
+    
+    ;jmp display
+    
+    
+ending:
+    ;mov eax, dword[ebp - 4] 
+    ;PRINT_DEC 4, eax
+    ;mov eax, dword[ebp - 8]
+    ;PRINT_DEC 4, eax
+    ;NEWLINE
+    ;PRINT_DEC 4, edx
+    NEWLINE
+    mov eax, dword[ebp - 12]
+    PRINT_DEC 4, eax
+    NEWLINE
+    mov eax, dword[ebp - 4]
+    
+    leave
+    ret

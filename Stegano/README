@@ -1,0 +1,85 @@
+						HOMEWORK 2 -> IOCLA
+							STEGANO
+									
+									Name: Livadaru Alexandru-Valentin
+									Group: 323 CA
+		TASK 1
+
+- Iterated through the matrix by simulating C-like for.
+
+- Iterated through the matrix by taking one key at a time
+
+- In the second loop I saved the beginning of the line in case we find
+	"revient"
+
+- Decrypted every character and looked for 'revient', then crypted them back
+
+- If found, go to the beginning of the line and display the decrypted 
+	characters until we find the string terminator
+
+- If not, repeat the process until we find the word, using every key
+
+- The second parameter helps to solve exercise 2.
+
+		TASK 2
+
+- Decrypted the matrix using the old key
+
+- Positioned myself on the next line after the line with the message
+	from exercise 1
+
+- Alterated the matrix by introducing the new message at the right positions
+
+- Calculated the new key, encrypted back the matrix and displayed it
+
+		TASK 3
+
+- Positioned myself at the position given by the function parameter
+
+- Introduced every character of the letter transformed in Morse code
+	at right position
+
+- I also introduced the string terminator and displayed the matrix
+
+		TASK 4
+
+- Went ot the right position in the int matrix
+
+- Checked if the current bit of the binary representation of the letter is
+	set or not
+
+- If it is, set the last bit of the number in the matrix
+
+- It it is not, clear the last bit of the number in the matrix
+
+- Continue until we found the 8th bit, then go to the next letter and repeat
+	the process
+
+- Displayed the matrix
+
+		Task 5
+
+- Went to the right spot in the matrix
+
+- Or operation between the number in the matrix and a mask made out of 1
+
+- If the result is unchanged, this means that the last bit of the number in
+	the matrix is set
+
+- We keep the result in eax, so we shift to the right position (using ecx)
+	and set the bit of the eax if it is needed
+
+- Go to the next bit and repeat the process util we find the string terminator
+	(00000000)
+
+		TASK 6
+
+- Iterated through the matrix using jumps (simulating C for)
+
+- Checked for the position of the element 
+	(not to be the first/last line/cloumn) and if the position was right,
+	I calculated the elemnt of the matrix using the given formula.
+
+- If the position was not right, I printed the number as it is
+
+Thank you for reading this, I hope everything was clear. Have a nice day :) 
